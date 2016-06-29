@@ -41,7 +41,7 @@ git config user.email "$COMMIT_AUTHOR_EMAIL"
 # If there are no changes to the compiled book (e.g. this is a README update) then just bail.
 # Intent-to-add means that diff will notice the files. Other git hacks, form an orderly queue.
 git add --intent-to-add .
-if [ -z `git diff --exit-code` ]; then
+if [ -z `git diff-index --quiet HEAD --` ]; then
     echo "No changes to the output on this push; exiting."
     exit 0
 fi
