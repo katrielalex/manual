@@ -16,7 +16,10 @@ SRC = $(sort $(wildcard src/*.md))
 OBJ = $(subst .md,.html,$(subst src,book,$(SRC)))
 TMP = $(subst src,tmp,$(SRC))
 
-all: $(OBJ)
+all: directories $(OBJ)
+
+directories:
+	mkdir -p {tmp,book}
 
 tmp/%.md: src/%.md ./filter.py
 	./filter.py $< $@
@@ -45,4 +48,4 @@ simple: $(TMP) $(TEMPLATE_LATEX) latex_macros
 	make -C tex
 
 clean:
-	-rm -f book/*.html tex/*.pdf tmp/*.md
+	-rm -rf book tex/*.pdf tmp
