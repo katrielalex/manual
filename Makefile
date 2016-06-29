@@ -19,7 +19,8 @@ TMP = $(subst src,tmp,$(SRC))
 all: directories $(OBJ)
 
 directories:
-	mkdir -p {tmp,book}
+	mkdir -p tmp
+	mkdir -p book
 
 tmp/%.md: src/%.md ./filter.py
 	./filter.py $< $@
