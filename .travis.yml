@@ -1,6 +1,12 @@
 language: generic
 script: bash ./deploy.sh
 
+addons:
+  apt:
+    packages:
+    - pandoc
+    - pandoc-citeproc
+
 env:
   global:
   - ENCRYPTION_LABEL: ebc0f2213c37
