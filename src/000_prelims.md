@@ -12,7 +12,7 @@ Protocol notation
 -----------------
 
 We will use spthy description for all protocols. In the introduction,
-we can additionally(!) give mathematical notation for the first few
+we can additionally (!) give mathematical notation for the first few
 examples. Also ensure all protocols are available as executable spthy
 files, and are stored in the sub-directory `code` of the repository for easy
 distribution. The best way to ensure everything fits together is to
