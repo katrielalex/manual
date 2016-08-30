@@ -11,7 +11,7 @@ addons:
     packages:
     - pandoc
     - pandoc-citeproc
-    - texlive-xelatex
+    - texlive-xetex
 
 env:
   global:
