@@ -1,9 +1,8 @@
 language: generic
 script: bash ./deploy.sh
 
-# We actually don't need sudo, but pandoc-citeproc isn't in 12.04 and
-# this is the Official Way to get travis to run a 14.04 build.
-# TODO(travis supports 14.04): remove following two lines
+# This is the Official Way to get travis to run a 14.04 build.
+# We need sudo to install texlive-xelatex for the pdf.
 sudo: required
 dist: trusty
 
@@ -12,6 +11,7 @@ addons:
     packages:
     - pandoc
     - pandoc-citeproc
+    - texlive-xelatex
 
 env:
   global:
