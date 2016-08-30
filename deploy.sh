@@ -15,31 +15,27 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]
     exit 0
 fi
 
-# Save some git information.
+# Set up some git information.
 REPO=`git config remote.origin.url`
 SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
 SHA=`git rev-parse --verify HEAD`
 
-# Clone the existing gh-pages for this repo into book/.
-# Create a new empty branch if gh-pages doesn't exist yet (should only happen on first deploy).
-CHECKOUT=/tmp/book
+# Clone the existing gh-pages for this repo into a temporary folder $CHECKOUT.
+CHECKOUT=`mktemp -d`
 mkdir -p $CHECKOUT
 git -C $CHECKOUT clone $REPO $CHECKOUT
-git -C $CHECKOUT checkout $TARGET_BRANCH || git -C $CHECKOUT checkout --orphan $TARGET_BRANCH
-
-# Clean out existing contents of checkout
-rm -rf $CHECKOUT/**/* || exit 0
-
-# Run our compile script
-doCompile
-
-# Now let's go have some fun with the cloned repo
-mv book $CHECKOUT
 git -C $CHECKOUT config user.name "Travis CI"
 git -C $CHECKOUT config user.email "$COMMIT_AUTHOR_EMAIL"
+# Create a new empty branch if gh-pages doesn't exist yet (should only happen on first deploy).
+git -C $CHECKOUT checkout $TARGET_BRANCH || git -C $CHECKOUT checkout --orphan $TARGET_BRANCH
+
+# Replace existing contents of checkout with the results of a fresh compile.
+rm -rf $CHECKOUT/**/* || exit 0
+doCompile
+mv book $CHECKOUT
 
 # If there are no changes to the compiled book (e.g. this is a README update) then just bail.
-if [[ -z `git status --porcelain` ]]; then
+if [[ -z `git -C $CHECKOUT status --porcelain` ]]; then
     echo "No changes to the output on this push; exiting."
     exit 0
 fi
