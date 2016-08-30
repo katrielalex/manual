@@ -373,8 +373,11 @@ end</code></pre>
 <h3 id="onlyonce"><a href="#onlyonce">OnlyOnce</a></h3>
 <p>If you have a rule that should only be executed once, put <code>OnlyOnce()</code> as an action fact for that rule and add this axiom:</p>
 <pre><code>axiom OnlyOnce:
-  &quot;All #i #j. OnlyOnce() &amp; OnlyOnce()@#j ==&gt; #i = #j&quot;</code></pre>
+  &quot;All #i #j. OnlyOnce()@#i &amp; OnlyOnce()@#j ==&gt; #i = #j&quot;</code></pre>
 <p>Then that rule can only be executed once. Note that if you have multiple rules that all have this action fact, at most one of them can be executed a single time.</p>
+<p>A similar construction can be used to limit multiple occurrences of an action for specific instantiations of variables, by adding these as arguments to the action. For example, one could put <code>OnlyOnceV('Initiator')</code> in a rule creating an initiator process, and <code>OnlyOnceV('Responder')</code> in the rule for the responder. If used with the following axiom, this would then yield the expected result of at most one initiator and at most one responder:</p>
+<pre><code>axiom OnlyOnceV:
+  &quot;All #i #j x. OnlyOnceV(x)@#i &amp; OnlyOnceV(x)@#j ==&gt; #i = #j&quot;</code></pre>
 <h3 id="less-than"><a href="#less-than">Less than</a></h3>
 <p>If we use the <code>multiset</code> built-in we can construct numbers as &quot;1+1+...+1&quot;, and have an axiom enforcing that one number is less than another, say <code>LessThan</code>:</p>
 <pre><code>axiom LessThan:
