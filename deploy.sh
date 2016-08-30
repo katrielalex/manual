@@ -22,17 +22,16 @@ fi
 
 # Clone the existing gh-pages for this repo into a temporary folder $CHECKOUT.
 CHECKOUT=`mktemp -d`
-mkdir -p $CHECKOUT
-git -C $CHECKOUT clone $REPO $CHECKOUT
+git clone $REPO $CHECKOUT
 git -C $CHECKOUT config user.name "Travis CI"
 git -C $CHECKOUT config user.email "$COMMIT_AUTHOR_EMAIL"
 # Create a new empty branch if gh-pages doesn't exist yet (should only happen on first deploy).
 git -C $CHECKOUT checkout $TARGET_BRANCH || git -C $CHECKOUT checkout --orphan $TARGET_BRANCH
 
 # Replace existing contents of checkout with the results of a fresh compile.
-rm -rf $CHECKOUT/**/* || exit 0
+rm -rf $CHECKOUT/* || exit 0
 doCompile
-mv book $CHECKOUT
+mv book/* $CHECKOUT
 
 # If there are no changes to the compiled book (e.g. this is a README update) then just bail.
 if [[ -z `git -C $CHECKOUT status --porcelain` ]]; then
