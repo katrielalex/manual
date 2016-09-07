@@ -13,6 +13,7 @@ addons:
     - texlive-xetex
     - latex-xcolor
     - lmodern
+    - texlive-latex-extra
 env:
   global:
   - ENCRYPTION_LABEL: ebc0f2213c37
