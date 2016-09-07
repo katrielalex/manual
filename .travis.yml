@@ -11,6 +11,7 @@ addons:
     - pandoc
     - pandoc-citeproc
     - texlive-xetex
+    - latex-xcolor
 env:
   global:
   - ENCRYPTION_LABEL: ebc0f2213c37
