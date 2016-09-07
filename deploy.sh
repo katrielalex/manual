@@ -11,6 +11,7 @@ TARGET_BRANCH="gh-pages"
 
 function doCompile {
     make
+    make pdf
 }
 
 # Pull requests and commits to other branches shouldn't try to deploy, just build to verify
@@ -31,7 +32,9 @@ git -C $CHECKOUT checkout $TARGET_BRANCH || git -C $CHECKOUT checkout --orphan $
 # Replace existing contents of checkout with the results of a fresh compile.
 rm -rf $CHECKOUT/* || exit 0
 doCompile
-mv book/* $CHECKOUT
+mv book code code_ERRORexamples code_ObsEquiv images $CHECKOUT
+mkdir -p $CHECKOUT/tex
+mv tex/tamarin-manual.pdf $CHECKOUT/tex/tamarin-manual.pdf
 
 # If there are no changes to the compiled book (e.g. this is a README update) then just bail.
 if [[ -z `git -C $CHECKOUT status --porcelain` ]]; then
