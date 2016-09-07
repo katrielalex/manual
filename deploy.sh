@@ -16,8 +16,7 @@ function doCompile {
 
 # Pull requests and commits to other branches shouldn't try to deploy, just build to verify
 if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]; then
-    echo "Skipping deploy; just doing a build."
-    doCompile
+    echo "Skipping deploy; not the right kind of build."
     exit 0
 fi
 
@@ -32,9 +31,12 @@ git -C $CHECKOUT checkout $TARGET_BRANCH || git -C $CHECKOUT checkout --orphan $
 # Replace existing contents of checkout with the results of a fresh compile.
 rm -rf $CHECKOUT/* || exit 0
 doCompile
-mv book code code_ERRORexamples code_ObsEquiv images $CHECKOUT
+for x in book code code_ERRORexamples code_ObsEquiv images
+do
+    cp -r $x $CHECKOUT
+done
 mkdir -p $CHECKOUT/tex
-mv tex/tamarin-manual.pdf $CHECKOUT/tex/tamarin-manual.pdf
+cp tex/tamarin-manual.pdf $CHECKOUT/tex/tamarin-manual.pdf
 
 # If there are no changes to the compiled book (e.g. this is a README update) then just bail.
 if [[ -z `git -C $CHECKOUT status --porcelain` ]]; then
