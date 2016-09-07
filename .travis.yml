@@ -12,6 +12,7 @@ addons:
     - pandoc-citeproc
     - texlive-xetex
     - latex-xcolor
+    - lmodern
 env:
   global:
   - ENCRYPTION_LABEL: ebc0f2213c37
